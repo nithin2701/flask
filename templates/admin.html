@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - RK Gold Company</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-body">
+    <div class="admin-gradient-bg"></div>
+
+    <div class="admin-dashboard-container">
+    
+    <header class="admin-header">
+        <div class="admin-header-content">
+            <div class="admin-logo-section">
+                <img src="/static/logo.jpg" alt="RK Gold Logo" class="admin-logo">
+                <div class="admin-title-section">
+                    <h1><i class="fas fa-crown"></i> Admin Dashboard</h1>
+                    <p class="admin-subtitle">Gold Empire Management Console</p>
+                </div>
+            </div>
+            <div class="admin-nav">
+                <a href="/" class="admin-nav-btn">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <div class="admin-user-info">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Administrator</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="admin-dashboard">
+            <!-- Quick Stats Section -->
+            <section class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon gold">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="admin-stat-content">
+                        <h3>Current Rate</h3>
+                        <span class="admin-stat-value">{{ gold_rate }}</span>
+                    </div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon blue">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="admin-stat-content">
+                        <h3>Active Offers</h3>
+                        <span class="admin-stat-value">{{ offers_text.split('\n')|length }}</span>
+                    </div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="admin-stat-content">
+                        <h3>Inquiries</h3>
+                        <span class="admin-stat-value">{{ inquiries|length if inquiries else 0 }}</span>
+                    </div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon purple">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="admin-stat-content">
+                        <h3>Status</h3>
+                        <span class="admin-stat-value">Active</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Management Form Section -->
+            <section class="admin-form-section">
+                <div class="admin-section-header">
+                    <h2><i class="fas fa-cogs"></i> Business Management</h2>
+                    <p>Update your gold business settings and information</p>
+                </div>
+                
+                <form method="post" class="admin-form-modern">
+                    <div class="admin-form-grid">
+                        <div class="admin-form-group">
+                            <label for="gold_rate" class="admin-label">
+                                <i class="fas fa-chart-line"></i>
+                                Gold Rate (₹/gram)
+                            </label>
+                            <div class="admin-input-wrapper">
+                                <input type="number" step="0.01" name="gold_rate" id="gold_rate" 
+                                       value="{{ gold_rate }}" required class="admin-input-modern">
+                                <span class="admin-input-focus"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-form-group full-width">
+                            <label for="offers" class="admin-label">
+                                <i class="fas fa-tags"></i>
+                                Special Offers
+                                <span class="admin-hint">Enter each offer on a new line</span>
+                            </label>
+                            <div class="admin-textarea-wrapper">
+                                <textarea name="offers" id="offers" rows="5" required 
+                                         class="admin-textarea-modern" placeholder="Enter your special offers...">{{ offers_text }}</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-form-group full-width">
+                            <label for="company_info" class="admin-label">
+                                <i class="fas fa-building"></i>
+                                Company Information
+                            </label>
+                            <div class="admin-textarea-wrapper">
+                                <textarea name="company_info" id="company_info" rows="4" required 
+                                         class="admin-textarea-modern" placeholder="Enter company information...">{{ company_info }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-form-actions">
+                        <button type="submit" class="admin-btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save All Changes
+                        </button>
+                        <button type="button" class="admin-btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-undo"></i>
+                            Reset
+                        </button>
+                    </div>
+                </form>
+                
+                {% if message %}
+                <div class="admin-alert admin-alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    {{ message }}
+                </div>
+                {% endif %}
+                
+                {% if error %}
+                <div class="admin-alert admin-alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ error }}
+                </div>
+                {% endif %}
+            </section>
+
+            <!-- Customer Inquiries Section -->
+            {% if inquiries %}
+            <section class="admin-inquiries-section">
+                <div class="admin-section-header">
+                    <h2><i class="fas fa-envelope"></i> Customer Inquiries</h2>
+                    <p>Manage and respond to customer inquiries</p>
+                </div>
+                
+                <div class="admin-table-container">
+                    <table class="admin-table-modern">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Name</th>
+                                <th><i class="fas fa-envelope"></i> Email</th>
+                                <th><i class="fas fa-phone"></i> Phone</th>
+                                <th><i class="fas fa-message"></i> Message</th>
+                                <th><i class="fas fa-calendar"></i> Date</th>
+                                <th><i class="fas fa-cog"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for inquiry in inquiries %}
+                            <tr class="admin-table-row">
+                                <td class="admin-cell-name">
+                                    <div class="admin-user-avatar">{{ inquiry[0][0].upper() }}</div>
+                                    {{ inquiry[0] }}
+                                </td>
+                                <td class="admin-cell-email">{{ inquiry[1] }}</td>
+                                <td class="admin-cell-phone">{{ inquiry[2] }}</td>
+                                <td class="admin-cell-message">
+                                    <div class="admin-message-preview">{{ inquiry[3][:50] }}{% if inquiry[3]|length > 50 %}...{% endif %}</div>
+                                </td>
+                                <td class="admin-cell-date">{{ inquiry[4] }}</td>
+                                <td class="admin-cell-actions">
+                                    <button class="admin-action-btn view" onclick="viewInquiry('{{ inquiry[3] }}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="admin-action-btn reply">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Inquiry Modal -->
+    <div id="inquiryModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h3><i class="fas fa-envelope-open"></i> Inquiry Details</h3>
+                <button class="admin-modal-close" onclick="closeInquiryModal()">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <p id="inquiryFullMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function resetForm() {
+            document.querySelector('.admin-form-modern').reset();
+        }
+        
+        function viewInquiry(message) {
+            document.getElementById('inquiryFullMessage').textContent = message;
+            document.getElementById('inquiryModal').style.display = 'flex';
+        }
+        
+        function closeInquiryModal() {
+            document.getElementById('inquiryModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            let modal = document.getElementById('inquiryModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Auto-hide alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.admin-alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company_name }} - Professional Gold Trading Services</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="business-home-body">
+    <!-- Professional Header -->
+    <header class="business-header">
+        <div class="header-container">
+            <div class="company-brand">
+                <img src="/static/logo.jpg" alt="{{ company_name }}" class="company-logo">
+                <div class="company-details">
+                    <h1>{{ company_name }}</h1>
+                    <p>Professional Gold Trading Services</p>
+                </div>
+            </div>
+            
+            <nav class="business-nav">
+                <a href="#home" class="nav-item active">Home</a>
+                <a href="#services" class="nav-item">Services</a>
+                <a href="#about" class="nav-item">About</a>
+                <a href="#contact" class="nav-item">Contact</a>
+                <a href="/admin" class="admin-access">Management Portal</a>
+            </nav>
+            
+            <button class="mobile-nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="business-hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2>India's Most Trusted Gold Trading Company</h2>
+                    <p class="hero-tagline">{{ tagline }}</p>
+                    <p class="hero-description">We provide transparent, secure, and reliable gold trading services with competitive rates and instant payments. Trust our decade of experience in the precious metals industry.</p>
+                    
+                    <div class="hero-actions">
+                        <button class="primary-button" onclick="openInquiryPopup()">
+                            Get Free Quote
+                        </button>
+                        <button class="secondary-button" onclick="scrollToSection('services')">
+                            Our Services
+                        </button>
+                    </div>
+                    
+                    <div class="trust-indicators">
+                        <div class="trust-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>ISO Certified</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Secure Transactions</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Instant Payments</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-sidebar">
+                    <div class="rate-display">
+                        <div class="rate-header">
+                            <h3>Current Gold Rate</h3>
+                            <span class="rate-badge">Live</span>
+                        </div>
+                        <div class="rate-value">{{ gold_rate }}</div>
+                        <div class="rate-note">Per gram • Updated in real-time</div>
+                        <button class="rate-cta" onclick="openInquiryPopup()">
+                            Get Quote Based on This Rate
+                        </button>
+                    </div>
+                    
+                    <div class="quick-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5000+</div>
+                            <div class="stat-label">Satisfied Customers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Transparent Pricing</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section class="business-features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose Our Services</h2>
+                <p>Professional gold trading backed by years of experience and customer trust</p>
+            </div>
+            <div class="features-grid">
+                {% for highlight in highlights %}
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>{{ highlight.split(' ')[0] }} {{ highlight.split(' ')[1] if highlight.split(' ')|length > 1 else '' }}</h3>
+                    <p>{{ highlight }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="business-services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Professional Services</h2>
+                <p>Comprehensive gold trading solutions for individuals and businesses</p>
+            </div>
+            <div class="services-grid">
+                {% for service in services %}
+                <div class="service-card">
+                    <div class="service-icon">
+                        {% if loop.index == 1 %}
+                            <i class="fas fa-handshake"></i>
+                        {% elif loop.index == 2 %}
+                            <i class="fas fa-money-bill-wave"></i>
+                        {% elif loop.index == 3 %}
+                            <i class="fas fa-university"></i>
+                        {% elif loop.index == 4 %}
+                            <i class="fas fa-search"></i>
+                        {% elif loop.index == 5 %}
+                            <i class="fas fa-building"></i>
+                        {% else %}
+                            <i class="fas fa-shield-alt"></i>
+                        {% endif %}
+                    </div>
+                    <h3>{{ service.split('-')[0] if '-' in service else service.split(' ')[0] + ' ' + service.split(' ')[1] if service.split(' ')|length > 1 else service }}</h3>
+                    <p>{{ service }}</p>
+                    <button class="service-cta" onclick="openInquiryPopup()">
+                        Learn More
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers Section -->
+    <section class="business-offers">
+        <div class="container">
+            <div class="section-header">
+                <h2>Current Promotions</h2>
+                <p>Special offers and competitive rates for our valued customers</p>
+            </div>
+            <div class="offers-grid">
+                {% for offer in offers %}
+                <div class="offer-card">
+                    <div class="offer-badge">Limited Time</div>
+                    <h3>{{ offer.split(' ')[0] }} {{ offer.split(' ')[1] if offer.split(' ')|length > 1 else '' }}</h3>
+                    <p>{{ offer }}</p>
+                    <button class="offer-cta" onclick="openInquiryPopup()">
+                        Claim Offer
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="business-about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About {{ company_name }}</h2>
+                    <p class="about-description">{{ company_info }}</p>
+                    
+                    <div class="credentials">
+                        <h3>Our Credentials</h3>
+                        <ul class="credentials-list">
+                            <li><i class="fas fa-certificate"></i> ISO 9001:2015 Certified</li>
+                            <li><i class="fas fa-award"></i> Bureau of Indian Standards Approved</li>
+                            <li><i class="fas fa-shield-alt"></i> RBI Guidelines Compliant</li>
+                            <li><i class="fas fa-star"></i> Industry Excellence Award 2023</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Years of Excellence</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-label">Happy Customers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Transparent Deals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">₹50Cr+</div>
+                        <div class="stat-label">Gold Traded</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="business-testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Customer Testimonials</h2>
+                <p>What our clients say about our professional services</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"RK Gold Company gave me the best price for my old jewelry. The process was transparent and quick!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">R</div>
+                        <div class="author-info">
+                            <span class="author-name">Rahul Sharma</span>
+                            <span class="author-title">Individual Customer</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Very friendly staff and excellent service. Highly recommended for selling gold in the city."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">N</div>
+                        <div class="author-info">
+                            <span class="author-name">Neeraj Kumar</span>
+                            <span class="author-title">Regular Customer</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"I was impressed by their professionalism and instant payment. Will visit again!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div class="author-info">
+                            <span class="author-name">Manish Tiwari</span>
+                            <span class="author-title">Business Owner</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer class="business-footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="/static/logo.jpg" alt="{{ company_name }}" class="footer-logo-img">
+                        <h3>{{ company_name }}</h3>
+                    </div>
+                    <p>Your trusted partner for professional gold trading services with transparent pricing and secure transactions.</p>
+                    
+                    <div class="business-hours">
+                        <h4>Business Hours</h4>
+                        <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
+                        <p>Saturday & Sunday: 10:00 AM - 6:00 PM</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <div class="contact-list">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ company_name }}, Main Road, Your City</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+91 9876543210</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@rkgold.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-globe"></i>
+                            <span>www.rkgold.com</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Our Services</h4>
+                    <ul class="service-links">
+                        <li><a href="#services">Gold Buying & Selling</a></li>
+                        <li><a href="#services">Instant Cash Payment</a></li>
+                        <li><a href="#services">Gold Rate Inquiry</a></li>
+                        <li><a href="#services">Corporate Solutions</a></li>
+                        <li><a href="#services">Secure Transactions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Certifications</h4>
+                    <div class="certifications">
+                        <div class="cert-item">
+                            <i class="fas fa-certificate"></i>
+                            <span>ISO 9001:2015</span>
+                        </div>
+                        <div class="cert-item">
+                            <i class="fas fa-award"></i>
+                            <span>BIS Approved</span>
+                        </div>
+                        <div class="cert-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>RBI Compliant</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 {{ company_name }}. All rights reserved.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#terms">Terms of Service</a>
+                    <a href="#compliance">Compliance</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Professional Contact Form -->
+    <div id="inquiry-popup" class="business-inquiry-popup">
+        <div class="inquiry-backdrop" onclick="closeInquiryPopup()"></div>
+        <div class="business-inquiry-content">
+            <div class="inquiry-header">
+                <h2>Request a Quote</h2>
+                <p>Get the best rates for your gold trading needs</p>
+                <button class="inquiry-close" onclick="closeInquiryPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="inquiry-form" class="business-inquiry-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Your Requirements</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Please describe your gold trading requirements..." required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button">
+                    Submit Inquiry
+                </button>
+            </form>
+            
+            <div id="inquiry-success" class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h3>Thank You!</h3>
+                <p>Your inquiry has been submitted. We will contact you within 24 hours.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Professional Contact Buttons -->
+    <div class="contact-buttons">
+        <button class="contact-btn inquiry-btn" onclick="openInquiryPopup()" title="Get Quote">
+            <i class="fas fa-calculator"></i>
+        </button>
+        <button class="contact-btn whatsapp-btn" onclick="openWhatsApp()" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+        <button class="contact-btn phone-btn" onclick="callNow()" title="Call Now">
+            <i class="fas fa-phone"></i>
+        </button>
+    </div>
+
+    <script>
+        // Professional JavaScript functionality
+        function openInquiryPopup() {
+            document.getElementById('inquiry-popup').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeInquiryPopup() {
+            document.getElementById('inquiry-popup').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('inquiry-success').style.display = 'none';
+        }
+        
+        function openWhatsApp() {
+            window.open('https://wa.me/919876543210?text=Hi! I would like to inquire about your gold trading services.', '_blank');
+        }
+        
+        function callNow() {
+            window.location.href = 'tel:+919876543210';
+        }
+        
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Mobile navigation
+        document.querySelector('.mobile-nav-toggle').addEventListener('click', function() {
+            document.querySelector('.business-nav').classList.toggle('active');
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-item[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                if (document.getElementById(targetId)) {
+                    scrollToSection(targetId);
+                }
+            });
+        });
+        
+        // Form submission
+        document.getElementById('inquiry-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const submitBtn = form.querySelector('.submit-button');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            
+            try {
+                const data = new FormData(form);
+                const res = await fetch('/inquiry', {method: 'POST', body: data});
+                
+                if (res.ok) {
+                    form.style.display = 'none';
+                    document.getElementById('inquiry-success').style.display = 'block';
+                    setTimeout(() => {
+                        closeInquiryPopup();
+                        form.style.display = 'block';
+                        form.reset();
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to submit');
+                }
+            } catch (error) {
+                alert('Sorry, there was an error. Please try calling us directly at +91 9876543210');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        };
+        
+        // Professional navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.business-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
